@@ -76,5 +76,5 @@ Result
 JSON Duration: 0.17911291122436523 seconds
 Protobuf Duration: 0.339336633682251 seconds
 JSON Size: 217 bytes
-Protobuf Size: 65 Gbytes
+Protobuf Size: 65 bytes
 ```
