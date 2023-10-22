@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from orjson import orjson
 
-from src import future_kline_pb2
+import future_kline_pb2
 
 
 @dataclass(frozen=True)
@@ -41,8 +41,8 @@ class FutureKline:
 
     @classmethod
     def from_proto(cls, proto_string: str):
-        proto = future_kline_pb2.FutureKline()  # Создайте объект FutureKline
-        proto.ParseFromString(proto_string)  # Разберите строку с этим объектом
+        proto = future_kline_pb2.FutureKline()
+        proto.ParseFromString(proto_string)
         return cls(
             exchange=proto.exchange,
             symbol=proto.symbol,
