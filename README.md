@@ -71,3 +71,10 @@ proto_size = sys.getsizeof(kline.to_proto())
 print(f"JSON Size: {json_size} bytes")
 print(f"Protobuf Size: {proto_size} bytes")
 ```
+Result
+```shell
+JSON Duration: 0.17911291122436523 seconds
+Protobuf Duration: 0.339336633682251 seconds
+JSON Size: 217 bytes
+Protobuf Size: 65 Gbytes
+```
