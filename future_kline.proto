@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+message FutureKline {
+    string exchange = 1;
+    string symbol = 2;
+    int64 event_time = 3;
+    string timeframe = 4;
+    int64 open_time = 5;
+    float open_price = 6;
+    float close_price = 7;
+    float high_price = 8;
+    float low_price = 9;
+    float volume = 10;
+}
