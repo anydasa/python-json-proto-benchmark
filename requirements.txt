@@ -1,0 +1,4 @@
+protobuf
+orjson
+dataclasses
+avro-python3

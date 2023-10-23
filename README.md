@@ -1,4 +1,4 @@
-# JSON (orjson) vs Protocol Buffers Performance Test (Python)
+# JSON (orjson) vs Protobuf vs Arvo Benchmark
 
 This repository contains a performance comparison between ORJSON and Protocol Buffers in Python, utilizing dataclasses. The performance test is conducted on 10,000 iterations for serialization and deserialization, and a separate test is conducted for evaluating the size of the serialized data.
 
@@ -7,18 +7,20 @@ This repository contains a performance comparison between ORJSON and Protocol Bu
 - Time taken for 10,000 iterations:
   - JSON Duration: 0.019 seconds
   - Protobuf Duration: 0.036 seconds
+  - Arvo Duration: 0.20 seconds
 
 - Size of serialized data:
   - JSON Size: 217 bytes
   - Protobuf Size: 65 bytes
+  - Arvo Size: 81 bytes
 
+## How to Run the Test
 
-## Dependencies
+1. Clone the repository.
+2. Install the necessary dependencies using `pip install -r requirements.txt`.
+3. Run the test script using `python src/benchmark.py`.
 
-- orjson
-- protobuf
-- dataclasses (Python 3.10)
-
+### DTO FutureKline
 ```python
 @dataclass(frozen=True)
 class FutureKline:
@@ -51,16 +53,20 @@ kline = FutureKline(
 
 start_time = time.time()
 for _ in range(10000):
-    json_data = kline.to_json()
-    kline_from_json = FutureKline.from_json(json_data)
+    FutureKline.from_json(kline.to_json())
 json_duration = time.time() - start_time
 
-proto_kline = kline.to_proto()
 start_time = time.time()
 for _ in range(10000):
-    proto_data = kline.to_proto()
-    kline_from_proto = FutureKline.from_proto(proto_data)
+    FutureKline.from_proto(kline.to_proto())
 proto_duration = time.time() - start_time
+
+
+start_time = time.time()
+for _ in range(10000):
+    FutureKline.from_avro(kline.to_avro())
+arvo_duration = time.time() - start_time
+
 
 print(f"JSON Duration: {json_duration} seconds")
 print(f"Protobuf Duration: {proto_duration} seconds")
@@ -73,8 +79,11 @@ print(f"Protobuf Size: {proto_size} bytes")
 ```
 Result
 ```shell
-JSON Duration: 0.17911291122436523 seconds
-Protobuf Duration: 0.339336633682251 seconds
+JSON Duration: 0.01618671417236328 seconds
+Protobuf Duration: 0.023717641830444336 seconds
+Arvo Duration: 0.20125746726989746 seconds
+
 JSON Size: 217 bytes
 Protobuf Size: 65 bytes
+Arvo Size: 81 bytes
 ```

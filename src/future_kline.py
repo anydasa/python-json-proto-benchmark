@@ -1,7 +1,32 @@
 from dataclasses import dataclass
+
+import avro
+from avro.schema import Parse
 from orjson import orjson
 
 import future_kline_pb2
+
+from avro.io import DatumReader, DatumWriter
+import io
+
+avro_schema = Parse("""
+{
+    "type": "record",
+    "name": "FutureKline",
+    "fields": [
+        {"name": "exchange", "type": "string"},
+        {"name": "symbol", "type": "string"},
+        {"name": "event_time", "type": "long"},
+        {"name": "timeframe", "type": "string"},
+        {"name": "open_time", "type": "long"},
+        {"name": "open_price", "type": "float"},
+        {"name": "close_price", "type": "float"},
+        {"name": "high_price", "type": "float"},
+        {"name": "low_price", "type": "float"},
+        {"name": "volume", "type": "float"}
+    ]
+}
+""")
 
 
 @dataclass(frozen=True)
@@ -55,3 +80,18 @@ class FutureKline:
             low_price=proto.low_price,
             volume=proto.volume
         )
+
+    def to_avro(self):
+        writer = DatumWriter(avro_schema)
+        bytes_writer = io.BytesIO()
+        encoder = avro.io.BinaryEncoder(bytes_writer)
+        writer.write(self.__dict__, encoder)
+        return bytes_writer.getvalue()
+
+    @classmethod
+    def from_avro(cls, avro_bytes):
+        reader = DatumReader(avro_schema)
+        bytes_reader = io.BytesIO(avro_bytes)
+        decoder = avro.io.BinaryDecoder(bytes_reader)
+        avro_dict = reader.read(decoder)
+        return cls(**avro_dict)
