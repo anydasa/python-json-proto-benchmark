@@ -1,6 +1,6 @@
-# JSON (orjson) vs Protobuf vs Arvo Benchmark
+# JSON (orjson) vs Protobuf vs Arvo serialization benchmark
 
-This repository contains a performance comparison between ORJSON and Protocol Buffers in Python, utilizing dataclasses. The performance test is conducted on 10,000 iterations for serialization and deserialization, and a separate test is conducted for evaluating the size of the serialized data.
+This repository contains a performance comparison between ORJSON and Protocol Buffers and ARVO in Python, utilizing dataclasses. The performance test is conducted on 10,000 iterations for serialization and deserialization, and a separate test is conducted for evaluating the size of the serialized data.
 
 ## Results
 
@@ -21,6 +21,7 @@ This repository contains a performance comparison between ORJSON and Protocol Bu
 3. Run the test script using `python src/benchmark.py`.
 
 ### DTO FutureKline
+
 ```python
 @dataclass(frozen=True)
 class FutureKline:
